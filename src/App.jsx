@@ -8,6 +8,7 @@ import Portfolio from './pages/Portfolio';
 import Chat from './pages/Chat';
 import Weather from './pages/Weather';
 import Merch from './pages/Merch';
+import TryOS from './pages/TryOS';
 import './App.css';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/weather" element={<Weather />} />
             <Route path="/merch" element={<Merch addToCart={addToCart} cart={cart} removeFromCart={removeFromCart} clearCart={clearCart} />} />
+            <Route path="/try-os" element={<TryOS />} />
             <Route path="/chat" element={<Chat />} />
           </Routes>
         </main>

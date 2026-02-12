@@ -1,0 +1,329 @@
+/* Try OS Main Container */
+.try-os-container {
+    width: 100%;
+    height: calc(100vh - 80px);
+    /* Adjust for navbar */
+    position: relative;
+    overflow: hidden;
+    background-color: #000;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* OS Selection Overlay */
+.os-selector-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(20px);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+.os-selector-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.os-selector-title {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.os-cards {
+    display: flex;
+    gap: 3rem;
+}
+
+.os-card {
+    width: 250px;
+    height: 350px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 2rem;
+    text-align: center;
+}
+
+.os-card:hover {
+    transform: translateY(-15px) scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.os-icon {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+}
+
+.os-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Common OS Desktop Styles */
+.os-desktop {
+    flex: 1;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* macOS Specific */
+.macos-desktop {
+    background-image: url('../assets/macos_wallpaper.png');
+}
+
+.macos-menubar {
+    height: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.macos-menubar .left {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.macos-menubar .right {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.macos-dock-container {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 50;
+}
+
+.macos-dock-item {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.macos-dock-item:hover {
+    width: 70px;
+    height: 70px;
+    margin: 0 5px;
+    transform: translateY(-10px);
+}
+
+.macos-dock-item::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    display: none;
+}
+
+.macos-dock-item.active::after {
+    display: block;
+}
+
+/* Windows Specific */
+.windows-desktop {
+    background-image: url('../assets/windows_wallpaper.png');
+    justify-content: flex-end;
+}
+
+.windows-taskbar {
+    height: 48px;
+    background: rgba(20, 20, 20, 0.7);
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    position: relative;
+    z-index: 60;
+}
+
+.windows-taskbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+}
+
+.windows-taskbar-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 20px;
+}
+
+.windows-taskbar-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.windows-start-menu {
+    position: absolute;
+    bottom: 55px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    width: 500px;
+    height: 600px;
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    z-index: 70;
+    display: none;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0, 1, 0.5, 1);
+    padding: 30px;
+}
+
+.windows-start-menu.open {
+    display: block;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Simulated Window */
+.sim-window {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 600px;
+    height: 400px;
+    background: rgba(25, 25, 25, 0.8);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    z-index: 55;
+    animation: windowEnter 0.3s ease-out;
+}
+
+@keyframes windowEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.sim-window-header {
+    height: 35px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.macos-window-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.macos-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.close {
+    background: #ff5f56;
+}
+
+.minimize {
+    background: #ffbd2e;
+}
+
+.maximize {
+    background: #27c93f;
+}
+
+.sim-window-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.switch-os-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    z-index: 80;
+    transition: 0.3s;
+}
+
+.switch-os-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
