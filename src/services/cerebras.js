@@ -5,9 +5,9 @@ export const sendMessageToCerebras = async (message) => {
     // In production (Netlify), this will likely be undefined for security.
     const VITE_API_KEY = import.meta.env.VITE_CEREBRAS_API_KEY;
 
-    // 1. Try Calling via Netlify Function (Secure Production Method)
+    // 1. Try Calling via Vercel Function (Secure Production Method)
     try {
-        const response = await fetch("/.netlify/functions/chat", {
+        const response = await fetch("/api/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message })

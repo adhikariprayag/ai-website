@@ -1,18 +1,17 @@
-export const handler = async (event, context) => {
+export default async function handler(req, res) {
     // Only allow POST requests
-    if (event.httpMethod !== "POST") {
-        return { statusCode: 405, body: "Method Not Allowed" };
+    if (req.method !== "POST") {
+        return res.status(405).json({ error: "Method Not Allowed" });
     }
 
     try {
-        const { message } = JSON.parse(event.body);
+        const { message } = req.body;
         const API_KEY = process.env.CEREBRAS_API_KEY;
 
         if (!API_KEY) {
-            return {
-                statusCode: 500,
-                body: JSON.stringify({ error: { message: "Cerebras API Key is missing on the server" } })
-            };
+            return res.status(500).json({
+                error: { message: "Cerebras API Key is missing on Vercel server" }
+            });
         }
 
         const response = await fetch("https://api.cerebras.ai/v1/chat/completions", {
@@ -35,21 +34,14 @@ export const handler = async (event, context) => {
         const data = await response.json();
 
         if (!response.ok) {
-            return {
-                statusCode: response.status,
-                body: JSON.stringify(data)
-            };
+            return res.status(response.status).json(data);
         }
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ content: data.choices[0].message.content })
-        };
+        return res.status(200).json({ content: data.choices[0].message.content });
     } catch (error) {
-        console.error("Error in Netlify Function:", error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ error: { message: "Internal Server Error" } })
-        };
+        console.error("Error in Vercel Function:", error);
+        return res.status(500).json({
+            error: { message: "Internal Server Error" }
+        });
     }
-};
+}
