@@ -27,7 +27,6 @@ function App() {
     setCart([]);
   };
 
-  console.log("App component rendering...");
   return (
     <Router>
       <div className="app-container">
