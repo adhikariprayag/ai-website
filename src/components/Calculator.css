@@ -1,0 +1,74 @@
+.calculator {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px var(--glass-shadow);
+  width: 300px;
+  border: 1px solid var(--glass-border);
+}
+
+.display {
+  background: rgba(0, 0, 0, 0.2);
+  /* Keep dark for display contrast or use input-bg? */
+  color: white;
+  font-size: 2rem;
+  padding: 15px;
+  text-align: right;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  min-height: 60px;
+  word-wrap: break-word;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.keypad button {
+  padding: 15px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: var(--glass-input-bg);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.keypad button:hover {
+  background: var(--glass-hover-bg);
+  transform: translateY(-2px);
+}
+
+.keypad button:active {
+  transform: translateY(0);
+}
+
+.keypad button.operator {
+  background: rgba(100, 108, 255, 0.5);
+}
+
+.keypad button.operator:hover {
+  background: rgba(100, 108, 255, 0.7);
+}
+
+.keypad button.equals {
+  background: #646cff;
+  grid-column: span 2;
+}
+
+.keypad button.equals:hover {
+  background: #535bf2;
+}
+
+.keypad button.clear {
+  background: #ff6b6b;
+  grid-column: span 2;
+}
+
+.keypad button.clear:hover {
+  background: #ff5252;
+}

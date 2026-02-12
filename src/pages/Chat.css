@@ -1,0 +1,27 @@
+.user-message {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border-bottom-right-radius: 0;
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #f8fafc;
+    align-self: flex-end;
+    max-width: 80%;
+}
+
+.message-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-container.user {
+    align-items: flex-end;
+}
+
+.loading-indicator {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    padding: 1rem;
+    font-style: italic;
+}

@@ -1,0 +1,6 @@
+/* Reset and global imports */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
