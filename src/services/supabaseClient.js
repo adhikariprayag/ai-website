@@ -3,11 +3,19 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn("Supabase credentials missing. Global comments will not persist. Please check your .env file.");
+const isValidUrl = (url) => {
+    try {
+        return url && (url.startsWith('http://') || url.startsWith('https://'));
+    } catch {
+        return false;
+    }
+};
+
+if (!isValidUrl(supabaseUrl) || !supabaseAnonKey) {
+    console.warn("Supabase credentials missing or invalid. Global comments will not persist. Check your Vercel Environment Variables.");
 }
 
-export const supabase = (supabaseUrl && supabaseAnonKey)
+export const supabase = (isValidUrl(supabaseUrl) && supabaseAnonKey)
     ? createClient(supabaseUrl, supabaseAnonKey)
     : null;
 
