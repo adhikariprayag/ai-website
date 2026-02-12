@@ -55,7 +55,8 @@ const Comments = () => {
             // but we can also manually refresh or let the subscription handle it.
             // If subscription isn't working/setup, loadComments() would be the fallback.
         } catch (err) {
-            setError('Failed to post comment. Ensure your Supabase table and keys are correct.');
+            setError(`Failed to post comment: ${err.message}`);
+            console.error("Submit Error:", err);
         } finally {
             setPosting(false);
         }

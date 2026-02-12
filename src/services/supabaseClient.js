@@ -55,7 +55,7 @@ export const postComment = async (comment) => {
 
     if (error) {
         console.error('Error posting comment:', error);
-        throw error;
+        throw new Error(`Supabase Error (${error.code || 'unknown'}): ${error.message}`);
     }
     return data[0];
 };
