@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MusicPlayer from './components/MusicPlayer';
+import VoiceAssistant from './components/VoiceAssistant';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Portfolio from './pages/Portfolio';
@@ -10,6 +11,7 @@ import Weather from './pages/Weather';
 import Merch from './pages/Merch';
 import TryOS from './pages/TryOS';
 import Comments from './pages/Comments';
+import ColorPicker from './pages/ColorPicker';
 import './App.css';
 
 function App() {
@@ -32,6 +34,7 @@ function App() {
       <div className="app-container">
         <Navbar cartCount={cart.length} />
         <MusicPlayer />
+        <VoiceAssistant />
         <main className="content">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -41,6 +44,7 @@ function App() {
             <Route path="/merch" element={<Merch addToCart={addToCart} cart={cart} removeFromCart={removeFromCart} clearCart={clearCart} />} />
             <Route path="/try-os" element={<TryOS />} />
             <Route path="/comments" element={<Comments />} />
+            <Route path="/color-picker" element={<ColorPicker />} />
             <Route path="/chat" element={<Chat />} />
           </Routes>
         </main>

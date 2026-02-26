@@ -11,8 +11,18 @@ const isValidUrl = (url) => {
     }
 };
 
+if (!supabaseUrl) {
+    console.warn("DIAGNOSTIC: VITE_SUPABASE_URL is missing.");
+} else if (!isValidUrl(supabaseUrl)) {
+    console.warn(`DIAGNOSTIC: VITE_SUPABASE_URL is invalid. It must start with https://. Current value: "${supabaseUrl}"`);
+}
+
+if (!supabaseAnonKey) {
+    console.warn("DIAGNOSTIC: VITE_SUPABASE_ANON_KEY is missing.");
+}
+
 if (!isValidUrl(supabaseUrl) || !supabaseAnonKey) {
-    console.warn("Supabase credentials missing or invalid. Global comments will not persist. Check your Vercel Environment Variables.");
+    console.error("Supabase initialization failed. Global comments will NOT work.");
 }
 
 export const supabase = (isValidUrl(supabaseUrl) && supabaseAnonKey)
