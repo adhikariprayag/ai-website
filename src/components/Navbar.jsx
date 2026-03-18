@@ -26,6 +26,7 @@ const Navbar = ({ cartCount }) => {
                 <Link to="/try-os" className="nav-btn">try os</Link>
                 <Link to="/comments" className="nav-btn">comments</Link>
                 <Link to="/color-picker" className="nav-btn">colors</Link>
+                <Link to="/talking-elon" className="nav-btn">talking elon</Link>
 
                 <Link to="/chat" className="nav-btn special">chat with ai</Link>
                 <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">

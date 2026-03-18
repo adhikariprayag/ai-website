@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchComments, postComment, supabase } from '../services/supabaseClient';
+import { subscribeToComments, postComment } from '../services/firebase';
 import './Comments.css';
 
 const Comments = () => {
@@ -11,49 +11,36 @@ const Comments = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        loadComments();
-
-        // Optional: Real-time updates
-        if (supabase) {
-            const subscription = supabase
-                .channel('public:comments')
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments' }, (payload) => {
-                    setComments((prev) => [payload.new, ...prev]);
-                })
-                .subscribe();
-
-            return () => {
-                supabase.removeChannel(subscription);
-            };
-        }
-    }, []);
-
-    const loadComments = async () => {
-        try {
-            setLoading(true);
-            const data = await fetchComments();
+        setLoading(true);
+        // Firebase real-time subscription
+        const unsubscribe = subscribeToComments((data) => {
             setComments(data);
-            setError(null);
-        } catch (err) {
-            setError('Failed to load comments. Please check your connection or Supabase setup.');
-            console.error(err);
-        } finally {
             setLoading(false);
-        }
-    };
+            setError(null);
+        }, (err) => {
+            setError(`Connection Error: ${err.message}. Please check your Firebase rules.`);
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!name.trim() || !content.trim()) return;
+
+        // Check if Firebase is configured
+        if (import.meta.env.VITE_FIREBASE_API_KEY === 'your-api-key') {
+            setError("Firebase is not configured yet. Please add your credentials to the .env file.");
+            return;
+        }
 
         try {
             setPosting(true);
             await postComment({ name, content });
             setName('');
             setContent('');
-            // The real-time subscription will update the list if configured, 
-            // but we can also manually refresh or let the subscription handle it.
-            // If subscription isn't working/setup, loadComments() would be the fallback.
+            setError(null);
         } catch (err) {
             setError(`Failed to post comment: ${err.message}`);
             console.error("Submit Error:", err);
@@ -66,7 +53,7 @@ const Comments = () => {
         <div className="comments-container">
             <div className="comments-header">
                 <h1>Global Feed</h1>
-                <p>Connect with users from around the world.</p>
+                <p>Connect with users from around the world via Firebase.</p>
             </div>
 
             <section className="comment-form-section">
@@ -112,7 +99,7 @@ const Comments = () => {
                                 <div className="comment-card-header">
                                     <span className="comment-author">{comment.name}</span>
                                     <span className="comment-date">
-                                        {new Date(comment.created_at).toLocaleDateString()}
+                                        {comment.created_at ? new Date(comment.created_at.seconds * 1000).toLocaleDateString() : 'Just now'}
                                     </span>
                                 </div>
                                 <div className="comment-content">

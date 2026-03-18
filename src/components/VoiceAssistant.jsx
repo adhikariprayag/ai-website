@@ -46,6 +46,7 @@ const VoiceAssistant = () => {
         else if (command.includes('try os') || command.includes('operating system')) navigate('/try-os');
         else if (command.includes('comments')) navigate('/comments');
         else if (command.includes('chat') || command.includes('ai')) navigate('/chat');
+        else if (command.includes('elon')) navigate('/talking-elon');
         else if (command.includes('color')) navigate('/color-picker');
         else setFeedback(`Command "${command}" not recognized.`);
     };

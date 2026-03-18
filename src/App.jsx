@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MusicPlayer from './components/MusicPlayer';
 import VoiceAssistant from './components/VoiceAssistant';
+import CursorParticles from './components/CursorParticles';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Portfolio from './pages/Portfolio';
@@ -12,6 +13,7 @@ import Merch from './pages/Merch';
 import TryOS from './pages/TryOS';
 import Comments from './pages/Comments';
 import ColorPicker from './pages/ColorPicker';
+import TalkingElon from './pages/TalkingElon';
 import './App.css';
 
 function App() {
@@ -32,6 +34,7 @@ function App() {
   return (
     <Router>
       <div className="app-container">
+        <CursorParticles />
         <Navbar cartCount={cart.length} />
         <MusicPlayer />
         <VoiceAssistant />
@@ -46,6 +49,7 @@ function App() {
             <Route path="/comments" element={<Comments />} />
             <Route path="/color-picker" element={<ColorPicker />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/talking-elon" element={<TalkingElon />} />
           </Routes>
         </main>
       </div>
