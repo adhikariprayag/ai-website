@@ -8,18 +8,17 @@ export const streamMessageToElon = async (message, onChunk, onDone, onError) => 
     const VITE_API_KEY = import.meta.env.VITE_CEREBRAS_API_KEY;
     const systemPrompt = "You are Elon Musk. While maintaining your ambitious, witty, and visionary persona, you are now a highly advanced AI assistant. CRITICAL: Never include stage directions, actions in asterisks, or non-verbal cues (e.g., *adjusts suit*, *smiles*, *chuckles*). Only provide the text intended to be spoken. Keep responses clear and engaging.";
 
-    if (!VITE_API_KEY || VITE_API_KEY.trim() === "") {
-        onError("Cerebras API key is missing. Please add VITE_CEREBRAS_API_KEY to your .env file.");
-        return;
-    }
+    // Logic: If VITE_API_KEY exists, use direct API (local dev). 
+    // If not, use the secure Vercel Edge Function proxy (/api/stream).
+    const useProxy = !VITE_API_KEY || VITE_API_KEY.trim() === "";
+    const url = useProxy ? "/api/stream" : CEREBRAS_API_URL;
+    const headers = { "Content-Type": "application/json" };
+    if (!useProxy) headers["Authorization"] = `Bearer ${VITE_API_KEY.trim()}`;
 
     try {
-        const response = await fetch(CEREBRAS_API_URL, {
+        const response = await fetch(url, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${VITE_API_KEY.trim()}`
-            },
+            headers: headers,
             body: JSON.stringify({
                 model: "llama3.1-8b",
                 messages: [
@@ -28,7 +27,8 @@ export const streamMessageToElon = async (message, onChunk, onDone, onError) => 
                 ],
                 max_tokens: 1000,
                 temperature: 0.7,
-                stream: true
+                stream: true,
+                systemPrompt: useProxy ? systemPrompt : undefined // Send to proxy if using it
             })
         });
 
