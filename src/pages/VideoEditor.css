@@ -1,0 +1,332 @@
+.video-editor-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    color: white;
+}
+
+.editor-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.editor-subtitle {
+    color: #94a3b8;
+    margin-bottom: 3rem;
+}
+
+/* Persona Bar */
+.persona-bar {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+}
+
+.persona-card {
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+}
+
+.persona-img-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.persona-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.persona-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #94a3b8;
+    transition: all 0.3s ease;
+}
+
+.persona-card:hover .persona-img-container {
+    transform: scale(1.1);
+    border-color: rgba(96, 165, 251, 0.5);
+}
+
+.persona-card.active .persona-img-container {
+    transform: scale(1.2);
+    border-color: #60a5fa;
+    box-shadow: 0 0 30px rgba(96, 165, 251, 0.4);
+}
+
+.persona-card.active .persona-name {
+    color: #60a5fa;
+    font-weight: 700;
+}
+
+.persona-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(96, 165, 251, 0.4) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.persona-card.active .persona-glow {
+    opacity: 1;
+}
+
+/* SVG Line */
+.connecting-line-svg {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    height: calc(100% + 100px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.connecting-path {
+    fill: none;
+    stroke: #60a5fa;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 10, 10;
+    filter: drop-shadow(0 0 8px #60a5fa);
+    opacity: 0.6;
+    transition: all 0.5s ease;
+}
+
+.connecting-path.processing {
+    stroke: #a855f7;
+    filter: drop-shadow(0 0 12px #a855f7);
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: dash 3s linear infinite;
+    opacity: 1;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Workspace */
+.editor-workspace {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.video-main-container {
+    width: 100%;
+    max-width: 640px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 2;
+    transition: all 0.5s ease;
+}
+
+.video-main-container.revamped {
+    border-color: #22c55e;
+    box-shadow: 0 0 40px rgba(34, 197, 94, 0.2);
+}
+
+.upload-placeholder {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-btn {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.upload-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #60a5fa;
+}
+
+.upload-icon {
+    font-size: 3rem;
+}
+
+.video-preview-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.main-video-player {
+    width: 100%;
+    display: block;
+}
+
+/* Processing Overlay */
+.processing-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.ai-scanner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #a855f7;
+    box-shadow: 0 0 15px #a855f7;
+    animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+    0% {
+        top: 0;
+    }
+
+    50% {
+        top: 100%;
+    }
+
+    100% {
+        top: 0;
+    }
+}
+
+.processing-content {
+    text-align: center;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(168, 85, 247, 0.2);
+    border-top-color: #a855f7;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.progress-bar-stack {
+    width: 250px;
+    margin-top: 1.5rem;
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #60a5fa, #a855f7);
+    transition: width 0.1s linear;
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #a855f7;
+}
+
+.success-badge {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: #22c55e;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 10px 20px rgba(34, 197, 94, 0.4);
+    z-index: 15;
+}
+
+/* Actions */
+.editor-actions {
+    margin-top: 2rem;
+}
+
+.revamp-btn {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    border-radius: 50px;
+}
+
+.secondary-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.secondary-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 768px) {
+    .persona-bar {
+        gap: 1rem;
+    }
+
+    .persona-img-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    .connecting-line-svg {
+        display: none;
+    }
+}

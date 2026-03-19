@@ -14,6 +14,7 @@ import TryOS from './pages/TryOS';
 import Comments from './pages/Comments';
 import ColorPicker from './pages/ColorPicker';
 import TalkingElon from './pages/TalkingElon';
+import VideoEditor from './pages/VideoEditor';
 import './App.css';
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
             <Route path="/color-picker" element={<ColorPicker />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/talking-elon" element={<TalkingElon />} />
+            <Route path="/editor" element={<VideoEditor />} />
           </Routes>
         </main>
       </div>
