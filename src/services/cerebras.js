@@ -16,10 +16,9 @@ export const streamMessageToElon = async (message, onChunk, onDone, onError) => 
     if (!useProxy) headers["Authorization"] = `Bearer ${VITE_API_KEY.trim()}`;
 
     try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify({
+        const body = useProxy
+            ? { message, systemPrompt }
+            : {
                 model: "llama3.1-8b",
                 messages: [
                     { role: "system", content: systemPrompt },
@@ -27,9 +26,13 @@ export const streamMessageToElon = async (message, onChunk, onDone, onError) => 
                 ],
                 max_tokens: 1000,
                 temperature: 0.7,
-                stream: true,
-                systemPrompt: useProxy ? systemPrompt : undefined // Send to proxy if using it
-            })
+                stream: true
+            };
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(body)
         });
 
         if (!response.ok) {
