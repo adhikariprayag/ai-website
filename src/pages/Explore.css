@@ -1,0 +1,301 @@
+.explore-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    background-color: #050b14;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.explore-header {
+    position: absolute;
+    top: 100px;
+    left: 40px;
+    z-index: 20;
+    pointer-events: none;
+    text-align: left;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 20px 30px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeInDown 1s ease-out;
+}
+
+.explore-header h1 {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+    background: linear-gradient(90deg, #fff, #88ccff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.explore-header p {
+    font-size: 1.1rem;
+    margin: 0;
+    color: #ccc;
+    font-weight: 300;
+}
+
+.globe-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+}
+
+.globe-wrapper:active {
+    cursor: grabbing;
+}
+
+
+/* Premium Mini-Player */
+.global-music-player {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 15, 25, 0.98); /* Deep glass alternative, solid */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    padding: 15px 25px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 50;
+    min-width: 450px;
+    max-width: 90vw;
+    animation: fadeInUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.player-art {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    animation: spin 10s linear infinite;
+}
+
+.player-art.paused {
+    animation-play-state: paused;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+.player-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.player-info {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.track-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+
+.track-artist {
+    color: #88ccff;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+
+.player-scrubber {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-scrubber .time {
+    font-size: 0.8rem;
+    color: #aaa;
+    font-variant-numeric: tabular-nums;
+    min-width: 35px;
+}
+
+.progress-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.progress-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #00ff80;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 255, 128, 0.5);
+    transition: transform 0.1s;
+}
+
+.progress-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.3);
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ctrl-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+.ctrl-btn:hover:not(:disabled) {
+    color: #00ff80;
+    transform: scale(1.1);
+}
+.ctrl-btn:disabled {
+    color: #555;
+    cursor: not-allowed;
+}
+
+.play-pause-btn {
+    background: #00ff80;
+    border: none;
+    color: #000;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(0, 255, 128, 0.3);
+}
+
+.play-pause-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 255, 128, 0.5);
+}
+
+.loading-spinner {
+    color: #00ff80;
+    font-weight: 500;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .global-music-player {
+        bottom: 20px;
+        min-width: 90vw;
+        padding: 10px 15px;
+        flex-wrap: wrap;
+        border-radius: 20px;
+    }
+    .player-art {
+        width: 40px;
+        height: 40px;
+    }
+    .player-controls {
+        width: 100%;
+        justify-content: center;
+        margin-top: 5px;
+    }
+    .track-title, .track-artist {
+        max-width: 200px;
+    }
+    .explore-header {
+        top: 90px;
+        left: 20px;
+        padding: 15px 20px;
+    }
+
+    .explore-header h1 {
+        font-size: 1.8rem;
+    }
+}
+
+.bottom-right-country {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    background: rgba(10, 15, 25, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    padding: 15px 30px;
+    border-radius: 20px;
+    z-index: 50;
+    animation: fadeInUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.bottom-right-country h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #fff, #88ccff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

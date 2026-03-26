@@ -15,6 +15,7 @@ import Comments from './pages/Comments';
 import ColorPicker from './pages/ColorPicker';
 import TalkingElon from './pages/TalkingElon';
 import VideoEditor from './pages/VideoEditor';
+import Explore from './pages/Explore';
 import './App.css';
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
             <Route path="/chat" element={<Chat />} />
             <Route path="/talking-elon" element={<TalkingElon />} />
             <Route path="/editor" element={<VideoEditor />} />
+            <Route path="/explore" element={<Explore />} />
           </Routes>
         </main>
       </div>
