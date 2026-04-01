@@ -4,6 +4,7 @@ const apiKey = import.meta.env.VITE_CEREBRAS_API_KEY;
 
 export const cerebrasClient = new Cerebras({
   apiKey: apiKey || 'dummy-key',
+  dangerouslyAllowBrowser: true
 });
 
 // Defines the tools the agent can use
@@ -211,7 +212,7 @@ export const getAgentResponse = async (messages) => {
 
   try {
     const response = await cerebrasClient.chat.completions.create({
-      model: 'llama3.1-8b', // Typical model available on Cerebras inference
+      model: 'llama3.3-70b',
       messages: [
         { role: 'system', content: `You are an AI assistant built into the user's portfolio website. You can help them navigate the site or answer questions. If they ask you to perform an action on the site, use the available tools.` },
         ...messages
