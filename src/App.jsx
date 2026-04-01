@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MusicPlayer from './components/MusicPlayer';
-import VoiceAssistant from './components/VoiceAssistant';
 import CursorParticles from './components/CursorParticles';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
@@ -16,6 +15,7 @@ import ColorPicker from './pages/ColorPicker';
 import TalkingElon from './pages/TalkingElon';
 import VideoEditor from './pages/VideoEditor';
 import Explore from './pages/Explore';
+import CerebrasAgent from './components/CerebrasAgent';
 import './App.css';
 
 function App() {
@@ -39,7 +39,6 @@ function App() {
         <CursorParticles />
         <Navbar cartCount={cart.length} />
         <MusicPlayer />
-        <VoiceAssistant />
         <main className="content">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -56,6 +55,7 @@ function App() {
             <Route path="/explore" element={<Explore />} />
           </Routes>
         </main>
+        <CerebrasAgent />
       </div>
     </Router>
   );

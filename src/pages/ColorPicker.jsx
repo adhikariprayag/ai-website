@@ -4,6 +4,14 @@ import './ColorPicker.css';
 const ColorPicker = () => {
     const [color, setColor] = useState('#646cff');
 
+    React.useEffect(() => {
+        const handleAiColor = (e) => {
+            setColor(e.detail);
+        };
+        window.addEventListener('ai_pick_color', handleAiColor);
+        return () => window.removeEventListener('ai_pick_color', handleAiColor);
+    }, []);
+
     const hexToRgb = (hex) => {
         const r = parseInt(hex.slice(1, 3), 16);
         const g = parseInt(hex.slice(3, 5), 16);

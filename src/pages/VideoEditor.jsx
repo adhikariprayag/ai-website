@@ -113,8 +113,16 @@ const VideoEditor = () => {
         const handleResize = () => updateLine();
         window.addEventListener('resize', handleResize);
         const timer = setTimeout(updateLine, 200);
+
+        const handleAiPersona = (e) => {
+            setActivePersona(e.detail);
+            // Optionally auto start if video is already uploaded
+        };
+        window.addEventListener('ai_set_persona', handleAiPersona);
+
         return () => {
             window.removeEventListener('resize', handleResize);
+            window.removeEventListener('ai_set_persona', handleAiPersona);
             clearTimeout(timer);
         };
     }, [activePersona, videoUrl]);

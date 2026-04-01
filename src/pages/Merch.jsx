@@ -14,6 +14,19 @@ const products = [
 const Merch = ({ addToCart, cart, removeFromCart, clearCart }) => {
     const [isCartOpen, setIsCartOpen] = useState(false);
 
+    React.useEffect(() => {
+        const handleAiCart = (e) => {
+            const query = e.detail.toLowerCase();
+            const product = products.find(p => p.name.toLowerCase().includes(query));
+            if (product) {
+                addToCart(product);
+                setIsCartOpen(true);
+            }
+        };
+        window.addEventListener('ai_add_to_cart', handleAiCart);
+        return () => window.removeEventListener('ai_add_to_cart', handleAiCart);
+    }, [addToCart]);
+
     return (
         <div className="merch-container">
             <div className="merch-header">

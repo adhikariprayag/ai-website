@@ -16,10 +16,23 @@ const Contact = () => {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        if (e && e.preventDefault) e.preventDefault();
         alert(`Thanks ${formData.name}! Your message has been "sent" (conceptually).`);
         setFormData({ name: '', email: '', message: '' });
     };
+
+    React.useEffect(() => {
+        const handleAiContact = (e) => {
+            setFormData(e.detail);
+            // Wait for state to settle then submit
+            setTimeout(() => {
+               alert(`Thanks ${e.detail.name}! Your AI message has been "sent" (conceptually).`);
+               setFormData({ name: '', email: '', message: '' });
+            }, 500);
+        };
+        window.addEventListener('ai_contact_submit', handleAiContact);
+        return () => window.removeEventListener('ai_contact_submit', handleAiContact);
+    }, []);
 
     return (
         <div className="page-content animate-fade-in">

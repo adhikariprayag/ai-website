@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Calculator.css';
 
 const Calculator = () => {
@@ -39,6 +39,36 @@ const Calculator = () => {
             setDisplay(display + '.');
         }
     };
+
+    const processExpression = (expr) => {
+        try {
+            // eslint-disable-next-line no-eval
+            const res = eval(expr);
+            setDisplay(String(res));
+            setEquation(expr + ' = ');
+        } catch(err) {
+            setDisplay('Error');
+        }
+    };
+
+    useEffect(() => {
+        const pendingAction = sessionStorage.getItem('ai_action');
+        if (pendingAction) {
+            try {
+                const action = JSON.parse(pendingAction);
+                if (action.type === 'ai_calculate_math') {
+                    sessionStorage.removeItem('ai_action');
+                    setTimeout(() => processExpression(action.detail), 500);
+                }
+            } catch(e) {}
+        }
+    }, []);
+
+    useEffect(() => {
+        const handleAiCalc = (e) => processExpression(e.detail);
+        window.addEventListener('ai_calculate_math', handleAiCalc);
+        return () => window.removeEventListener('ai_calculate_math', handleAiCalc);
+    });
 
     return (
         <div className="calculator">

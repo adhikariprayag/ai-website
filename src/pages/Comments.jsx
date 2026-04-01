@@ -22,7 +22,32 @@ const Comments = () => {
             setLoading(false);
         });
 
-        return () => unsubscribe();
+        const handleAiComment = async (e) => {
+            const { name, content } = e.detail;
+            setName(name);
+            setContent(content);
+            if (import.meta.env.VITE_FIREBASE_API_KEY === 'your-api-key') {
+                setError("Firebase is not configured yet. Please add your credentials to the .env file.");
+                return;
+            }
+            try {
+                setPosting(true);
+                await postComment({ name, content });
+                setName('');
+                setContent('');
+                setError(null);
+            } catch (err) {
+                setError(`Failed to post comment: ${err.message}`);
+            } finally {
+                setPosting(false);
+            }
+        };
+        window.addEventListener('ai_post_comment', handleAiComment);
+
+        return () => {
+            unsubscribe();
+            window.removeEventListener('ai_post_comment', handleAiComment);
+        };
     }, []);
 
     const handleSubmit = async (e) => {

@@ -190,6 +190,23 @@ const Explore = () => {
         return d === hoverD ? 0.12 : 0.06;
     }, [hoverD]);
 
+    useEffect(() => {
+        const onAiExplore = (e) => {
+            const targetCountry = e.detail;
+            if (countries && countries.features) {
+                const polygon = countries.features.find(f => 
+                    f.properties.ADMIN && f.properties.ADMIN.toLowerCase().includes(targetCountry.toLowerCase())
+                );
+                if (polygon) {
+                    handlePolygonClick(polygon);
+                }
+            }
+        };
+        window.addEventListener('ai_explore_country', onAiExplore);
+        return () => window.removeEventListener('ai_explore_country', onAiExplore);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [countries]);
+
     return (
         <ErrorBoundary>
         <div className="explore-container">

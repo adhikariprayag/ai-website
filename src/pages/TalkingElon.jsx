@@ -147,6 +147,16 @@ const TalkingElon = () => {
         }
     };
 
+    useEffect(() => {
+        const onAiTalk = (e) => {
+            const text = e.detail;
+            setTranscript(text);
+            handleElonReply(text);
+        };
+        window.addEventListener('ai_talk_to_elon', onAiTalk);
+        return () => window.removeEventListener('ai_talk_to_elon', onAiTalk);
+    }, []);
+
     return (
         <div className="page-content animate-fade-in">
             <div className="talking-elon-page">

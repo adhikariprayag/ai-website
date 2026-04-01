@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TicTacToe.css';
 
 const TicTacToe = () => {
@@ -46,6 +46,32 @@ const TicTacToe = () => {
         setBoard(Array(9).fill(null));
         setXIsNext(true);
     };
+
+    useEffect(() => {
+        const pendingAction = sessionStorage.getItem('ai_action');
+        if (pendingAction) {
+            try {
+                const action = JSON.parse(pendingAction);
+                if (action.type === 'ai_play_tictactoe') {
+                    sessionStorage.removeItem('ai_action');
+                    setTimeout(() => {
+                       if (action.detail === 'reset') resetGame();
+                       else handleClick(Number(action.detail));
+                    }, 500);
+                }
+            } catch(e) {}
+        }
+    }, []); // Check on mount after navigation
+
+    useEffect(() => {
+        const handleAiPlay = (e) => {
+            const move = e.detail;
+            if (move === 'reset') resetGame();
+            else handleClick(Number(move));
+        };
+        window.addEventListener('ai_play_tictactoe', handleAiPlay);
+        return () => window.removeEventListener('ai_play_tictactoe', handleAiPlay);
+    }); // Every render to capture latest closure 
 
     return (
         <div className="tictactoe">
