@@ -29,6 +29,7 @@ const Navbar = ({ cartCount }) => {
                 <Link to="/talking-elon" className="nav-btn">talking elon</Link>
                 <Link to="/explore" className="nav-btn">explore</Link>
 
+                <Link to="/meet-boss" className="nav-btn special">meet boss</Link>
                 <Link to="/chat" className="nav-btn special">chat with ai</Link>
                 <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
                     {theme === 'dark' ? '☀️' : '🌙'}

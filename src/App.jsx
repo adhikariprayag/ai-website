@@ -15,6 +15,7 @@ import ColorPicker from './pages/ColorPicker';
 import TalkingElon from './pages/TalkingElon';
 import VideoEditor from './pages/VideoEditor';
 import Explore from './pages/Explore';
+import MeetBoss from './pages/MeetBoss';
 import CerebrasAgent from './components/CerebrasAgent';
 import './App.css';
 
@@ -53,6 +54,7 @@ function App() {
             <Route path="/talking-elon" element={<TalkingElon />} />
             <Route path="/editor" element={<VideoEditor />} />
             <Route path="/explore" element={<Explore />} />
+            <Route path="/meet-boss" element={<MeetBoss />} />
           </Routes>
         </main>
         <CerebrasAgent />
