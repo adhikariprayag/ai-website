@@ -100,7 +100,7 @@ const MeetBoss = () => {
 
         return () => {
             if (clientRef.current) {
-                clientRef.current.stop();
+                clientRef.current.stopStreaming();
             }
         };
     }, []);
@@ -110,16 +110,13 @@ const MeetBoss = () => {
         
         if (isConnected) {
             setStatus('Disconnecting...');
-            await clientRef.current.stop();
+            await clientRef.current.stopStreaming();
             setIsConnected(false);
             setStatus('Standing By');
         } else {
             try {
                 setStatus('Connecting...');
-                // Usually Anam requires the video element ID or ref to attach the stream
-                // We'll pass the ID 'anam-video' or just call start()
-                await clientRef.current.start();
-                clientRef.current.streamToVideoElement('anam-video');
+                await clientRef.current.streamToVideoElement('anam-video');
             } catch (err) {
                 setStatus('Connection Failed');
                 setError(err.message);
