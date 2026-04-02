@@ -212,7 +212,7 @@ export const getAgentResponse = async (messages) => {
 
   try {
     const response = await cerebrasClient.chat.completions.create({
-      model: 'llama3.1-70b',
+      model: 'llama3.1-8b',
       messages: [
         { role: 'system', content: `You are an AI assistant built into the user's portfolio website. You can help them navigate the site or answer questions. If they ask you to perform an action on the site, use the available tools.` },
         ...messages
