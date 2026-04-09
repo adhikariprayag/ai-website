@@ -16,6 +16,7 @@ import TalkingElon from './pages/TalkingElon';
 import VideoEditor from './pages/VideoEditor';
 import Explore from './pages/Explore';
 import MeetBoss from './pages/MeetBoss';
+const VaultLogin = React.lazy(() => import('./pages/VaultLogin'));
 import CerebrasAgent from './components/CerebrasAgent';
 import './App.css';
 
@@ -55,6 +56,7 @@ function App() {
             <Route path="/editor" element={<VideoEditor />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/meet-boss" element={<MeetBoss />} />
+            <Route path="/vault" element={<React.Suspense fallback={<div style={{ color: 'white', padding: '2rem', textAlign: 'center' }}>Loading Neural Network Sequence...</div>}><VaultLogin /></React.Suspense>} />
           </Routes>
         </main>
         <CerebrasAgent />
