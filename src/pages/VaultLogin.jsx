@@ -5,12 +5,28 @@ import * as fp from 'fingerpose';
 import { customGestures } from '../services/gestures';
 import './VaultLogin.css';
 
-const SEQUENCE = ['thumbs_up', 'thumbs_down', 'wave'];
-const SEQUENCE_LABELS = ['Thumbs Up 👍', 'Thumbs Down 👎', 'Open Palm 👋'];
+const GESTURES_MAP = [
+  { id: 'thumbs_up', label: 'Thumbs Up 👍' },
+  { id: 'thumbs_down', label: 'Thumbs Down 👎' },
+  { id: 'wave', label: 'Open Palm 👋' },
+  { id: 'victory', label: 'Peace Sign ✌️' },
+  { id: 'fist', label: 'Closed Fist ✊' },
+  { id: 'point_up', label: 'Point Up ☝️' }
+];
+
+const shuffleArray = (array) => {
+  const newArr = [...array];
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+};
 const REQUIRED_DURATION_MS = 1500;
 const PAUSE_DURATION_MS = 1000;
 
 const VaultLogin = () => {
+  const sequenceRef = useRef(shuffleArray(GESTURES_MAP).slice(0, 3));
   const videoRef = useRef(null);
   
   // UI States
@@ -107,7 +123,8 @@ const VaultLogin = () => {
     }
 
     try {
-      const targetGesture = SEQUENCE[currentStepRef.current];
+      const targetGestureInfo = sequenceRef.current[currentStepRef.current];
+      const targetGesture = targetGestureInfo.id;
       const hand = await model.estimateHands(video);
 
       if (hand.length > 0) {
@@ -158,7 +175,7 @@ const VaultLogin = () => {
     
     const nextStep = currentStepRef.current + 1;
     
-    if (nextStep >= SEQUENCE.length) {
+    if (nextStep >= sequenceRef.current.length) {
       // Entire sequence matched!
       handleAccessGranted();
     } else {
@@ -194,12 +211,12 @@ const VaultLogin = () => {
           </div>
 
           <div className="sequence-tracker">
-            {SEQUENCE_LABELS.map((label, index) => (
+            {sequenceRef.current.map((item, index) => (
               <div 
                 key={index} 
                 className={`sequence-step ${index < currentStep ? 'completed' : ''} ${index === currentStep && status !== 'paused' ? 'active' : ''}`}
               >
-                {label}
+                {item.label}
               </div>
             ))}
           </div>
@@ -249,7 +266,7 @@ const VaultLogin = () => {
               {status === 'loading' ? 'Initializing...' : 
                status === 'paused' ? 'Pausing...' :
                status === 'granting' ? 'Unlocking Vault...' :
-               progress > 0 ? `Verifying Gesture... ${Math.round(progress)}%` : `Waiting for: ${SEQUENCE_LABELS[currentStep]}`}
+               progress > 0 ? `Verifying Gesture... ${Math.round(progress)}%` : `Waiting for: ${sequenceRef.current[currentStep]?.label}`}
             </div>
           </div>
         </div>
