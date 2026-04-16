@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import MacOS from '../components/MacOS';
 import WindowsOS from '../components/WindowsOS';
+import AndroidOS from '../components/AndroidOS';
 import './TryOS.css';
 
 const TryOS = () => {
-    const [selectedOS, setSelectedOS] = useState(null); // 'macos' or 'windows'
+    const { osType } = useParams();
+    const navigate = useNavigate();
+    const [selectedOS, setSelectedOS] = useState(osType || null);
+
+    useEffect(() => {
+        if (osType && ['macos', 'windows', 'android'].includes(osType)) {
+            setSelectedOS(osType);
+        } else {
+            setSelectedOS(null);
+        }
+    }, [osType]);
 
     const handleOSSelect = (os) => {
-        setSelectedOS(os);
+        navigate(`/try-os/${os}`);
     };
 
     const resetOS = () => {
-        setSelectedOS(null);
+        navigate('/try-os');
     };
 
     return (
@@ -37,12 +49,18 @@ const TryOS = () => {
                         <div className="os-name">Windows 11</div>
                         <p style={{ fontSize: '12px', marginTop: '10px', opacity: 0.7 }}>Experience the productivity of Microsoft's latest OS.</p>
                     </div>
+                    <div className="os-card" onClick={() => handleOSSelect('android')}>
+                        <div className="os-icon">📱</div>
+                        <div className="os-name">Android 15</div>
+                        <p style={{ fontSize: '12px', marginTop: '10px', opacity: 0.7 }}>Experience a voice agentic OS on your simulated phone.</p>
+                    </div>
                 </div>
             </div>
 
             {/* Simulated Desktop */}
             {selectedOS === 'macos' && <MacOS />}
             {selectedOS === 'windows' && <WindowsOS />}
+            {selectedOS === 'android' && <AndroidOS />}
         </div>
     );
 };

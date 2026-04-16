@@ -49,6 +49,7 @@ function App() {
             <Route path="/weather" element={<Weather />} />
             <Route path="/merch" element={<Merch addToCart={addToCart} cart={cart} removeFromCart={removeFromCart} clearCart={clearCart} />} />
             <Route path="/try-os" element={<TryOS />} />
+            <Route path="/try-os/:osType" element={<TryOS />} />
             <Route path="/comments" element={<Comments />} />
             <Route path="/color-picker" element={<ColorPicker />} />
             <Route path="/chat" element={<Chat />} />
