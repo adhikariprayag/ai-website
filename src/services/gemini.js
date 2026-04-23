@@ -15,7 +15,6 @@ export const sendMessageToGemini = async (message) => {
         if (!API_KEY) {
             throw new Error("Gemini API Key is missing. Please add VITE_GEMINI_API_KEY to your .env file.");
         }
-        // Re-initialize if key was added later (though usually requires reload)
         genAI = new GoogleGenerativeAI(API_KEY);
         model = genAI.getGenerativeModel({ model: "gemini-pro" });
     }
@@ -26,6 +25,32 @@ export const sendMessageToGemini = async (message) => {
         return response.text();
     } catch (error) {
         console.error("Error calling Gemini API:", error);
+        throw error;
+    }
+};
+
+export const sendMessageToGeminiWithImages = async (prompt, images) => {
+    if (!genAI) {
+        if (!API_KEY) {
+            throw new Error("Gemini API Key is missing.");
+        }
+        genAI = new GoogleGenerativeAI(API_KEY);
+    }
+    const visionModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    
+    const imageParts = images.map(img => ({
+        inlineData: {
+            data: img.base64,
+            mimeType: img.mimeType
+        }
+    }));
+    
+    try {
+        const result = await visionModel.generateContent([prompt, ...imageParts]);
+        const response = await result.response;
+        return response.text();
+    } catch (error) {
+        console.error("Error calling Gemini Vision API:", error);
         throw error;
     }
 };

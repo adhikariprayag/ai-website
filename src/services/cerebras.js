@@ -144,3 +144,51 @@ export const sendMessageToCerebras = async (message) => {
     }
     throw new Error("API Key missing.");
 };
+
+export const sendMessageToCerebrasWithImages = async (message, images) => {
+    const VITE_API_KEY = import.meta.env.VITE_CEREBRAS_API_KEY;
+
+    if (VITE_API_KEY && VITE_API_KEY.trim() !== "") {
+        try {
+            const contentArray = [{ type: "text", text: message }];
+            
+            images.forEach(img => {
+                contentArray.push({
+                    type: "image_url",
+                    image_url: {
+                        url: `data:${img.mimeType};base64,${img.base64}`
+                    }
+                });
+            });
+
+            const response = await fetch(CEREBRAS_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${VITE_API_KEY.trim()}`
+                },
+                body: JSON.stringify({
+                    model: "llama-3.2-11b-vision-instruct", 
+                    messages: [
+                        { role: "system", content: "You are a helpful AI assistant." },
+                        { role: "user", content: contentArray }
+                    ],
+                    max_tokens: 1000,
+                    temperature: 0.7
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } else {
+               const err = await response.json();
+               throw new Error(err.error?.message || "Cerebras Vision API Failed or Not Supported");
+            }
+        } catch (error) {
+            console.error("Direct API failed for Vision:", error);
+            throw error;
+        }
+    }
+    throw new Error("API Key missing.");
+};

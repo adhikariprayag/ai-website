@@ -5,6 +5,8 @@
     border-radius: 15px;
     box-shadow: 0 4px 6px var(--glass-shadow);
     width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
     border: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;

@@ -21,6 +21,7 @@
     "fingerpose": "^0.1.0",
     "firebase": "^12.10.0",
     "gsap": "^3.14.2",
+    "markdown-to-jsx": "^9.7.16",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-globe.gl": "^2.37.0",

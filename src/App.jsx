@@ -6,7 +6,6 @@ import CursorParticles from './components/CursorParticles';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Portfolio from './pages/Portfolio';
-import Chat from './pages/Chat';
 import Weather from './pages/Weather';
 import Merch from './pages/Merch';
 import TryOS from './pages/TryOS';
@@ -52,7 +51,6 @@ function App() {
             <Route path="/try-os/:osType" element={<TryOS />} />
             <Route path="/comments" element={<Comments />} />
             <Route path="/color-picker" element={<ColorPicker />} />
-            <Route path="/chat" element={<Chat />} />
             <Route path="/talking-elon" element={<TalkingElon />} />
             <Route path="/editor" element={<VideoEditor />} />
             <Route path="/explore" element={<Explore />} />
