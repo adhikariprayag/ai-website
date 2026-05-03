@@ -195,8 +195,8 @@
 .attachment-remove { background: none; border: none; color: white; cursor: pointer; padding: 0 4px;}
 
 .row-flex { display: flex; align-items: flex-end; gap: 0.8rem; }
-.attach-btn, .mic-btn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; cursor: pointer; flex-shrink: 0; font-size: 1.1rem; display: flex; justify-content: center; align-items: center; transition: background 0.2s, border-color 0.2s;}
-.attach-btn:hover, .mic-btn:hover { background: rgba(255,255,255,0.1); }
+.attach-btn, .mic-btn, .stop-speech-btn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; cursor: pointer; flex-shrink: 0; font-size: 1.1rem; display: flex; justify-content: center; align-items: center; transition: background 0.2s, border-color 0.2s;}
+.attach-btn:hover, .mic-btn:hover, .stop-speech-btn:hover { background: rgba(255,255,255,0.1); }
 .mic-btn.listening { background: #ff4444; border-color: #ff4444; animation: pulse 1.5s infinite; }
 
 .agent-textarea {

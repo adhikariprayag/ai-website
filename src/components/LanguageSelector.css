@@ -1,0 +1,107 @@
+/* Hide Google's default widget and elements */
+#google_translate_element {
+    opacity: 0 !important;
+    position: absolute !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+.skiptranslate iframe {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+body {
+    top: 0 !important;
+}
+
+#goog-gt-tt {
+    display: none !important;
+}
+
+.goog-te-spinner-pos {
+    display: none !important;
+}
+
+/* Custom Language Selector Styling */
+.language-selector-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 1000;
+}
+
+.custom-select-wrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 4px 8px;
+    gap: 6px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.custom-select-wrapper:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 107, 107, 0.4);
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.2);
+}
+
+.lang-icon {
+    width: 16px;
+    height: 16px;
+    stroke: rgba(255, 255, 255, 0.8);
+    transition: stroke 0.3s ease;
+}
+
+.custom-select-wrapper:hover .lang-icon {
+    stroke: #FF6B6B;
+}
+
+.custom-lang-select {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    padding-right: 4px;
+    font-family: inherit;
+}
+
+.custom-lang-select option {
+    background: #1e293b;
+    color: white;
+    font-weight: 500;
+}
+
+/* Light mode support */
+body.light-mode .custom-select-wrapper {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .custom-select-wrapper:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(255, 107, 107, 0.3);
+}
+
+body.light-mode .lang-icon {
+    stroke: rgba(0, 0, 0, 0.6);
+}
+
+body.light-mode .custom-lang-select {
+    color: #1e293b;
+}
+
+body.light-mode .custom-lang-select option {
+    background: white;
+    color: #1e293b;
+}

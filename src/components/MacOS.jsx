@@ -64,7 +64,7 @@ const MacOS = () => {
                     </div>
                     <div className="sim-window-content">
                         {win === 'Terminal' && (
-                            <div style={{ fontFamily: 'monospace', color: '#0f0' }}>
+                            <div className="notranslate" style={{ fontFamily: 'monospace', color: '#0f0' }}>
                                 <p>Last login: {new Date().toDateString()} on ttys000</p>
                                 <p>prayag@macbook-pro ~ % ls -la</p>
                                 <p>total 0</p>

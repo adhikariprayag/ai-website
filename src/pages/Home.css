@@ -82,3 +82,90 @@
     font-size: 1.2rem;
     animation: pulse 1.5s infinite;
 }
+
+/* About Me Section */
+.about-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.85);
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+body.light-mode .about-text {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+/* Skills Section */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.skill-category {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.skill-category:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 107, 107, 0.3);
+}
+
+body.light-mode .skill-category {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .skill-category:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.skill-category h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #ff8e53;
+    font-weight: 600;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skill-tag {
+    background: rgba(255, 107, 107, 0.15);
+    color: #ffcccb;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+    background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+    color: white;
+    border-color: transparent;
+    transform: scale(1.05);
+}
+
+body.light-mode .skill-tag {
+    background: rgba(255, 107, 107, 0.1);
+    color: #d84315;
+    border-color: rgba(255, 107, 107, 0.3);
+}
+
+body.light-mode .skill-tag:hover {
+    background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+    color: white;
+}

@@ -11,6 +11,7 @@ import Merch from './pages/Merch';
 import TryOS from './pages/TryOS';
 import Comments from './pages/Comments';
 import ColorPicker from './pages/ColorPicker';
+import News from './pages/News';
 import TalkingElon from './pages/TalkingElon';
 import VideoEditor from './pages/VideoEditor';
 import Explore from './pages/Explore';
@@ -51,6 +52,7 @@ function App() {
             <Route path="/try-os/:osType" element={<TryOS />} />
             <Route path="/comments" element={<Comments />} />
             <Route path="/color-picker" element={<ColorPicker />} />
+            <Route path="/news" element={<News />} />
             <Route path="/talking-elon" element={<TalkingElon />} />
             <Route path="/editor" element={<VideoEditor />} />
             <Route path="/explore" element={<Explore />} />

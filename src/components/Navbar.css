@@ -1,8 +1,8 @@
 /* Navbar Basics */
 .navbar.minimal {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: flex-start;
   padding: 1.5rem 2rem;
   background: transparent;
   border-bottom: none;
@@ -26,8 +26,15 @@
 
 .nav-controls {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
+}
+
+.top-right-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
 }
 
 .theme-toggle-fixed {
@@ -173,6 +180,83 @@
   stroke: white;
 }
 
+/* Three Dots Dock Submenu */
+.more-dock-item {
+  position: relative;
+}
+
+.dock-submenu {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%) translateX(20px);
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.more-dock-item:hover .dock-submenu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(0);
+}
+
+.dock-submenu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.6rem 1rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.dock-submenu-item:hover, .dock-submenu-item.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dock-submenu-item.active {
+  color: #FF8E53;
+}
+
+.submenu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submenu-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+.submenu-badge {
+  background: #ff3e3e;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: bold;
+  margin-left: auto;
+}
+
 /* Badge Styling */
 .dock-badge {
   position: absolute;
@@ -259,6 +343,43 @@
     border: 1px solid rgba(255, 107, 107, 0.3);
 }
 
+/* Mobile More Submenu */
+.mobile-more-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.more-btn {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+}
+
+.mobile-more-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 2rem;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.mobile-more-submenu.open {
+    max-height: 300px;
+    opacity: 1;
+    margin-top: 0.5rem;
+}
+
+.submenu-btn {
+    padding: 0.8rem;
+    font-size: 1rem;
+}
+
 /* Hamburger UI */
 .burger-btn {
   width: 45px;
@@ -301,6 +422,7 @@
   .navbar.minimal {
     position: absolute;
     width: auto;
+    right: 0;
   }
 }
 

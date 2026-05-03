@@ -28,11 +28,61 @@ const Home = () => {
     return (
         <div className="page-content animate-fade-in">
             <div className="hero-section">
-                <h1 className="hero-title">Creative Developer <br /> & Designer</h1>
-                <p className="hero-subtitle">Building digital experiences that matter.</p>
+                <h1 className="hero-title"><span className="notranslate">Prayag</span> Adhikari</h1>
+                <p className="hero-subtitle">Honors CS Student & Creative Developer</p>
             </div>
 
             <div className="feature-container">
+                {/* About Section */}
+                <div className="feature-section about-section">
+                    <h2 className="feature-title">About Me</h2>
+                    <p className="about-text">
+                        Honors CS student (GPA: 3.60) with hands-on experience in peer tutoring, academic coaching, and student-facing communication roles. Multilingual communicator (English, Hindi, Nepali, Spanish) with a strong understanding of Caldwell's academic programs, course planning, and campus resources. Passionate about helping peers navigate their college experience and achieve academic success.
+                    </p>
+                </div>
+
+                {/* Skills Section */}
+                <div className="feature-section skills-section">
+                    <h2 className="feature-title">Technical & Soft Skills</h2>
+                    <div className="skills-grid">
+                        <div className="skill-category">
+                            <h3>Web & Design Tools</h3>
+                            <div className="skill-tags">
+                                {['Figma', 'Canva', 'Adobe Photoshop', 'Illustrator', 'InDesign', 'Adobe XD'].map(skill => <span key={skill} className="skill-tag">{skill}</span>)}
+                            </div>
+                        </div>
+                        <div className="skill-category">
+                            <h3>Web Development</h3>
+                            <div className="skill-tags">
+                                {['HTML', 'CSS', 'JavaScript', 'React', 'Next.js', 'Tailwind CSS', 'Bootstrap', 'SASS'].map(skill => <span key={skill} className="skill-tag">{skill}</span>)}
+                            </div>
+                        </div>
+                        <div className="skill-category">
+                            <h3>UX/UI Design</h3>
+                            <div className="skill-tags">
+                                {['Wireframing', 'Prototyping', 'Visual Hierarchy', 'Mobile Responsiveness', 'Accessibility'].map(skill => <span key={skill} className="skill-tag">{skill}</span>)}
+                            </div>
+                        </div>
+                        <div className="skill-category">
+                            <h3>Platforms & Tools</h3>
+                            <div className="skill-tags">
+                                {['WordPress', 'Netlify', 'Render', 'Vercel', 'GitHub', 'Google Workspace'].map(skill => <span key={skill} className="skill-tag">{skill}</span>)}
+                            </div>
+                        </div>
+                        <div className="skill-category">
+                            <h3>Collaboration</h3>
+                            <div className="skill-tags">
+                                {['Communication', 'Creativity', 'Time Management', 'Marketing Support', 'Team Coordination'].map(skill => <span key={skill} className="skill-tag">{skill}</span>)}
+                            </div>
+                        </div>
+                        <div className="skill-category">
+                            <h3>Languages</h3>
+                            <div className="skill-tags">
+                                {['English (Fluent)', 'Hindi (Fluent)', 'Nepali (Native)', 'Spanish (Basic)'].map(skill => <span key={skill} className="skill-tag">{skill}</span>)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {/* Animal Video Section */}
                 <div className="feature-section">
                     <h2 className="feature-title">Meme here ;)</h2>

@@ -37,6 +37,7 @@ const CerebrasAgent = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [attachments, setAttachments] = useState([]);
   
   const [size, setSize] = useState({ width: window.innerWidth > 768 ? 800 : window.innerWidth, height: 500 });
@@ -64,7 +65,19 @@ const CerebrasAgent = () => {
     const preferredVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Google') || v.name.includes('Female'))) || voices.find(v => v.lang.startsWith('en'));
     if (preferredVoice) utterance.voice = preferredVoice;
     utterance.rate = 1.05;
+    
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
     window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeaking = () => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
   };
 
   const prevMessagesLength = useRef(messages.length);
@@ -284,83 +297,88 @@ const CerebrasAgent = () => {
       setAttachments(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
-  const handleToolCalls = async (toolCalls) => {
+  const handleToolCalls = async (toolCalls, currentMessages, customResponseContent) => {
+    let finalMessages = [...currentMessages];
     for (const toolCall of toolCalls) {
       if (toolCall.function.name === 'navigate_to') {
         const args = JSON.parse(toolCall.function.arguments);
         navigate(args.path);
-        updateActiveSession([...messages, { role: 'assistant', content: `Sure, I have navigated you to ${args.path}.` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Sure, I have navigated you to ${args.path}.` });
       } else if (toolCall.function.name === 'play_music') {
         const args = JSON.parse(toolCall.function.arguments);
         const playerBtn = document.querySelector('.music-player-btn');
         if (playerBtn) {
           playerBtn.click();
-          updateActiveSession([...messages, { role: 'assistant', content: `I've toggled the music player for you.` }]);
+          finalMessages.push({ role: 'assistant', content: customResponseContent || `I've toggled the music player for you.` });
         } else {
-          updateActiveSession([...messages, { role: 'assistant', content: `I couldn't find the music player on the screen.` }]);
+          finalMessages.push({ role: 'assistant', content: customResponseContent || `I couldn't find the music player on the screen.` });
         }
       } else if (toolCall.function.name === 'talk_to_elon') {
         const args = JSON.parse(toolCall.function.arguments);
         navigate('/talking-elon');
-        updateActiveSession([...messages, { role: 'assistant', content: `I've sent your message to Elon: "${args.text}"` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `I've sent your message to Elon: "${args.text}"` });
         sessionStorage.setItem('ai_action', JSON.stringify({ type: 'ai_talk_to_elon', detail: args.text }));
         setTimeout(() => window.dispatchEvent(new CustomEvent('ai_talk_to_elon', { detail: args.text })), 800);
       } else if (toolCall.function.name === 'explore_country') {
         const args = JSON.parse(toolCall.function.arguments);
         navigate('/explore');
-        updateActiveSession([...messages, { role: 'assistant', content: `I am navigating the globe to ${args.country}.` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `I am navigating the globe to ${args.country}.` });
         sessionStorage.setItem('ai_action', JSON.stringify({ type: 'ai_explore_country', detail: args.country }));
         setTimeout(() => window.dispatchEvent(new CustomEvent('ai_explore_country', { detail: args.country })), 1000);
       } else if (toolCall.function.name === 'contact_submit') {
         const args = JSON.parse(toolCall.function.arguments);
         navigate('/contact');
-        updateActiveSession([...messages, { role: 'assistant', content: `Sending Message to Contact Form...` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Sending Message to Contact Form...` });
         sessionStorage.setItem('ai_action', JSON.stringify({ type: 'ai_contact_submit', detail: args }));
         setTimeout(() => window.dispatchEvent(new CustomEvent('ai_contact_submit', { detail: args })), 800);
       } else if (toolCall.function.name === 'add_to_cart') {
         const args = JSON.parse(toolCall.function.arguments);
         navigate('/merch');
-        updateActiveSession([...messages, { role: 'assistant', content: `Adding ${args.product_name} to cart...` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Adding ${args.product_name} to cart...` });
         sessionStorage.setItem('ai_action', JSON.stringify({ type: 'ai_add_to_cart', detail: args.product_name }));
         setTimeout(() => window.dispatchEvent(new CustomEvent('ai_add_to_cart', { detail: args.product_name })), 800);
       } else if (toolCall.function.name === 'post_comment') {
         const args = JSON.parse(toolCall.function.arguments);
         navigate('/comments');
-        updateActiveSession([...messages, { role: 'assistant', content: `Posting comment...` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Posting comment...` });
         sessionStorage.setItem('ai_action', JSON.stringify({ type: 'ai_post_comment', detail: args }));
         setTimeout(() => window.dispatchEvent(new CustomEvent('ai_post_comment', { detail: args })), 800);
       } else if (toolCall.function.name === 'pick_color') {
         const args = JSON.parse(toolCall.function.arguments);
         navigate('/color-picker');
-        updateActiveSession([...messages, { role: 'assistant', content: `Setting color to ${args.hex_color}...` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Setting color to ${args.hex_color}...` });
         sessionStorage.setItem('ai_action', JSON.stringify({ type: 'ai_pick_color', detail: args.hex_color }));
         setTimeout(() => window.dispatchEvent(new CustomEvent('ai_pick_color', { detail: args.hex_color })), 800);
       } else if (toolCall.function.name === 'set_video_persona') {
         const args = JSON.parse(toolCall.function.arguments);
         navigate('/editor');
-        updateActiveSession([...messages, { role: 'assistant', content: `Setting persona to ${args.persona_id}. Make sure you upload a video!` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Setting persona to ${args.persona_id}. Make sure you upload a video!` });
         sessionStorage.setItem('ai_action', JSON.stringify({ type: 'ai_set_persona', detail: args.persona_id }));
         setTimeout(() => window.dispatchEvent(new CustomEvent('ai_set_persona', { detail: args.persona_id })), 800);
       } else if (toolCall.function.name === 'get_weather') {
         navigate('/weather');
-        updateActiveSession([...messages, { role: 'assistant', content: `Fetching weather data...` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Fetching weather data...` });
       } else if (toolCall.function.name === 'try_os') {
         navigate('/try-os');
-        updateActiveSession([...messages, { role: 'assistant', content: `Booting into TryOS...` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Booting into TryOS...` });
       } else if (toolCall.function.name === 'play_tictactoe') {
         const args = JSON.parse(toolCall.function.arguments);
         navigate('/portfolio');
-        updateActiveSession([...messages, { role: 'assistant', content: `Playing Tic Tac Toe move...` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Playing Tic Tac Toe move...` });
         sessionStorage.setItem('ai_action', JSON.stringify({ type: 'ai_play_tictactoe', detail: args.move }));
         setTimeout(() => window.dispatchEvent(new CustomEvent('ai_play_tictactoe', { detail: args.move })), 800);
       } else if (toolCall.function.name === 'calculate_math') {
         const args = JSON.parse(toolCall.function.arguments);
         navigate('/portfolio');
-        updateActiveSession([...messages, { role: 'assistant', content: `Calculating ${args.expression}...` }]);
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Calculating ${args.expression}...` });
         sessionStorage.setItem('ai_action', JSON.stringify({ type: 'ai_calculate_math', detail: args.expression }));
         setTimeout(() => window.dispatchEvent(new CustomEvent('ai_calculate_math', { detail: args.expression })), 800);
       }
+      
+      // If we used customResponseContent, only append it once instead of per tool call.
+      if (customResponseContent) break;
     }
+    updateActiveSession(finalMessages);
   };
 
   const handleSend = async (e) => {
@@ -415,7 +433,7 @@ const CerebrasAgent = () => {
             }
 
             if (response.tool_calls && response.tool_calls.length > 0) {
-                await handleToolCalls(response.tool_calls);
+                await handleToolCalls(response.tool_calls, updatedMessages, response.content);
             } else if (response.content) {
                 let content = response.content;
                 let pseudoToolCalls = [];
@@ -436,7 +454,7 @@ const CerebrasAgent = () => {
 
                 if (pseudoToolCalls.length > 0) {
                     try {
-                        await handleToolCalls(pseudoToolCalls);
+                        await handleToolCalls(pseudoToolCalls, updatedMessages, null);
                     } catch (e) {
                         updateActiveSession([...updatedMessages, { role: 'assistant', content: "Oops, I glitched out. Please try again!" }]);
                     }
@@ -564,6 +582,16 @@ const CerebrasAgent = () => {
                             multiple 
                             accept=".txt,.md,.json,.js,.py,.html,.css,.csv,.jpg,.jpeg,.png,.webp"
                         />
+                        {isSpeaking && (
+                            <button 
+                                type="button" 
+                                onClick={stopSpeaking}
+                                className="stop-speech-btn"
+                                title="Stop AI Voice"
+                            >
+                                🔇
+                            </button>
+                        )}
                         <button 
                             type="button" 
                             onClick={toggleListening}

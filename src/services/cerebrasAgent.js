@@ -48,13 +48,13 @@ export const agentTools = [
     type: 'function',
     function: {
       name: 'talk_to_elon',
-      description: 'Send a message to Elon on the Talking Elon page. Use this when the user wants to ask Elon a question.',
+      description: 'ONLY use this tool if the user EXPLICITLY types the name "Elon". Do NOT use this tool for general questions or casual chat. Navigates to the Talking Elon page.',
       parameters: {
         type: 'object',
         properties: {
           text: {
             type: 'string',
-            description: "The question or message to ask Elon."
+            description: "The exact message to send to Elon."
           }
         },
         required: ['text']
@@ -214,7 +214,7 @@ export const getAgentResponse = async (messages) => {
     const response = await cerebrasClient.chat.completions.create({
       model: 'llama3.1-8b',
       messages: [
-        { role: 'system', content: `You are an AI assistant built into the user's portfolio website. You can help them navigate the site or answer questions. If they ask you to perform an action on the site, use the available tools.` },
+        { role: 'system', content: `You are an independent AI assistant built into the user's portfolio website. Answer questions directly using your own knowledge. DO NOT hand off or redirect conversations to other personas like "Elon" unless the user explicitly mentions them by name. You can use tools to navigate the site only when requested.` },
         ...messages
       ],
       tools: agentTools,
