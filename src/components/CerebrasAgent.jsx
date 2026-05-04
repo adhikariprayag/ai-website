@@ -39,6 +39,7 @@ const CerebrasAgent = () => {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [attachments, setAttachments] = useState([]);
+  const [agentMode, setAgentMode] = useState('default');
   
   const [size, setSize] = useState({ width: window.innerWidth > 768 ? 800 : window.innerWidth, height: 500 });
 
@@ -373,6 +374,10 @@ const CerebrasAgent = () => {
         finalMessages.push({ role: 'assistant', content: customResponseContent || `Calculating ${args.expression}...` });
         sessionStorage.setItem('ai_action', JSON.stringify({ type: 'ai_calculate_math', detail: args.expression }));
         setTimeout(() => window.dispatchEvent(new CustomEvent('ai_calculate_math', { detail: args.expression })), 800);
+      } else if (toolCall.function.name === 'open_website') {
+        const args = JSON.parse(toolCall.function.arguments);
+        window.open(args.url, '_blank', 'noopener,noreferrer');
+        finalMessages.push({ role: 'assistant', content: customResponseContent || `Opening ${args.url} in a new tab...` });
       }
       
       // If we used customResponseContent, only append it once instead of per tool call.
@@ -424,7 +429,7 @@ const CerebrasAgent = () => {
         } else {
             // Standard Agent Route (Detects Tools)
             const history = [...updatedMessages].map(msg => ({ role: msg.role, content: msg.content }));
-            const response = await getAgentResponse(history);
+            const response = await getAgentResponse(history, agentMode);
 
             if (response.error) {
                 updateActiveSession([...updatedMessages, { role: 'assistant', content: `Error: ${response.error}` }]);
@@ -499,7 +504,19 @@ const CerebrasAgent = () => {
           </div>
 
           <div className="agent-header unselectable">
-            <h3>Cerebras Agent Workspace</h3>
+            <div className="agent-header-title">
+                <h3>Cerebras Agent Workspace</h3>
+                <div className="agent-mode-toggle">
+                    <button 
+                        className={agentMode === 'default' ? 'active' : ''} 
+                        onClick={(e) => { e.stopPropagation(); setAgentMode('default'); }}
+                    >Default</button>
+                    <button 
+                        className={agentMode === 'web' ? 'active' : ''} 
+                        onClick={(e) => { e.stopPropagation(); setAgentMode('web'); }}
+                    >Agent</button>
+                </div>
+            </div>
             <button className="close-btn" onClick={toggleAgent}>&times;</button>
           </div>
           
@@ -527,7 +544,7 @@ const CerebrasAgent = () => {
               )}
 
               {/* Main Interface */}
-              <div className="agent-main-chat">
+              <div className={`agent-main-chat ${agentMode === 'web' ? 'web-mode' : ''}`}>
                   <div className="agent-messages">
                     {messages.map((msg, idx) => (
                       <div key={idx} className={`message-container ${msg.role}`}>
@@ -607,7 +624,7 @@ const CerebrasAgent = () => {
                             onKeyDown={handleKeyDown}
                             onPaste={handlePaste}
                             disabled={isLoading}
-                            placeholder={isListening ? "Listening..." : "Message Cerebras... (Shift+Enter for new line)"}
+                            placeholder={isListening ? "Listening..." : (agentMode === 'web' ? "Ask the Web Agent to search Amazon, Google, or YouTube..." : "Ask me anything or to control the website...")}
                             className="agent-textarea"
                             rows={1}
                         />

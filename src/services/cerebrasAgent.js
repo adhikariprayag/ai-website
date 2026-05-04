@@ -29,6 +29,23 @@ export const agentTools = [
   {
     type: 'function',
     function: {
+      name: 'open_website',
+      description: 'Opens an external website URL in a new browser tab. Use this when the user asks to open, visit, or search a website. If the user asks to search for a product on Amazon, use "https://www.amazon.com/s?k=search+term". For YouTube searches, use "https://www.youtube.com/results?search_query=search+term". For Google searches, use "https://www.google.com/search?q=search+term".',
+      parameters: {
+        type: 'object',
+        properties: {
+          url: {
+            type: 'string',
+            description: "The full URL of the website to open. Must include https:// and be properly URL encoded."
+          }
+        },
+        required: ['url']
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
       name: 'play_music',
       description: 'Interact with the music player on the website if the user asks for music.',
       parameters: {
@@ -205,19 +222,29 @@ export const agentTools = [
   }
 ];
 
-export const getAgentResponse = async (messages) => {
+export const getAgentResponse = async (messages, mode = 'default') => {
   if (!apiKey) {
     return { error: 'Please set VITE_CEREBRAS_API_KEY in your .env file.' };
   }
 
   try {
+    let tools = agentTools;
+    let systemPrompt = `You are an independent AI assistant built into the user's portfolio website. Answer questions directly using your own knowledge. DO NOT hand off or redirect conversations to other personas like "Elon" unless the user explicitly mentions them by name. You can use tools to navigate the site only when requested.`;
+
+    if (mode === 'web') {
+      tools = agentTools.filter(t => t.function.name === 'open_website');
+      systemPrompt = `You are a Web Browsing AI Agent. Your ONLY job is to search the web and open websites for the user. When the user asks you a question or asks to open a site, USE the open_website tool to open the most relevant website or search engine URL. DO NOT answer questions directly if they require looking something up, use the tool.`;
+    } else {
+      tools = agentTools.filter(t => t.function.name !== 'open_website');
+    }
+
     const response = await cerebrasClient.chat.completions.create({
       model: 'llama3.1-8b',
       messages: [
-        { role: 'system', content: `You are an independent AI assistant built into the user's portfolio website. Answer questions directly using your own knowledge. DO NOT hand off or redirect conversations to other personas like "Elon" unless the user explicitly mentions them by name. You can use tools to navigate the site only when requested.` },
+        { role: 'system', content: systemPrompt },
         ...messages
       ],
-      tools: agentTools,
+      tools: tools,
       tool_choice: 'auto'
     });
 
